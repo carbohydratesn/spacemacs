@@ -26,12 +26,14 @@
       ;; enable fuzzy matching in code buffer and SLIME REPL
       (setq slime-complete-symbol*-fancy t)
       (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-      ;; enabel smartparen in code buffer and SLIME REPL
+      ;; enable smartparen in code buffer and SLIME REPL
       ;; (add-hook 'slime-repl-mode-hook #'smartparens-strict-mode)
       (defun slime/disable-smartparens ()
         (smartparens-strict-mode -1)
         (turn-off-smartparens-mode))
-      (add-hook 'slime-repl-mode-hook #'slime/disable-smartparens)
+      ;; only add the hook if smartparens is present
+      (when (require 'smartparens nil 'noerror)
+        (add-hook 'slime-repl-mode-hook #'slime/disable-smartparens))
       (spacemacs/add-to-hooks 'slime-mode '(lisp-mode-hook)))
     :config
     (progn
